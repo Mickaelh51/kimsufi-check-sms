@@ -38,7 +38,7 @@ if ($resp->is_success) {
 		$ref = $f->{"reference"};
 			my @Avai = @{ $f->{'zones'} };
 			foreach my $p ( @Avai) {
-				if($p->{'availability'} ne "unknown") { $avaiok = $p->{"zone"}; $type = $p->{"availability"}; }
+				if($p->{'availability'} ne "unknown" && $p->{'availability'} ne "unavailable") { $avaiok = $p->{"zone"}; $type = $p->{"availability"}; }
 			}
 		}
 	}
