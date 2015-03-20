@@ -35,11 +35,12 @@ if ($resp->is_success) {
 
 	my @Refs = @{ $decoded->{'availability'} };
 	foreach my $f ( @Refs ) {
-		$ref = $f->{"reference"};
-			my @Avai = @{ $f->{'zones'} };
-			foreach my $p ( @Avai) {
-				if($p->{'availability'} ne "unknown" && $p->{'availability'} ne "unavailable") { $avaiok = $p->{"zone"}; $type = $p->{"availability"}; }
-			}
+		if($f->{"reference"} eq $refdemand) {
+			$ref = $f->{"reference"};
+				my @Avai = @{ $f->{'zones'} };
+				foreach my $p ( @Avai) {
+					if($p->{'availability'} ne "unknown" && $p->{'availability'} ne "unavailable") { $avaiok = $p->{"zone"}; $type = $p->{"availability"}; }
+				}
 		}
 	}
 
@@ -52,7 +53,6 @@ if ($resp->is_success) {
 		my $req2 =  HTTP::Request->new(GET => $smsformat);
 		my $resp2 = $ua->request($req2);
 		if($resp2->is_success) { print "sms sent\n"; }
-		#print $smsformat . "\n";
 	}
 	
 }
