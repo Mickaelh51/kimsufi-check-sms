@@ -17,6 +17,15 @@ my $type;
 my $ref;
 my $sms;
 my $smsformat;
+my $refdemand = $ARGV[0];
+my $phone = $ARGV[1];
+my $tempfile = "/tmp/sms_kimsufi_$refdemand\_$phone";
+
+#Ex: /kimsufi_json.pl 143sys10 06XXXXXXXXX
+#Ex ref: 150sk10 . 150sk22 . 143sys10
+
+if(!$refdemand || !$phone) { print "no ref or no phone\n"; exit; }
+
  
 my $resp = $ua->request($req);
 if ($resp->is_success) {
@@ -26,22 +35,18 @@ if ($resp->is_success) {
 
 	my @Refs = @{ $decoded->{'availability'} };
 	foreach my $f ( @Refs ) {
-	if($f->{"reference"} eq "150sk10") { 
-	#if($f->{"reference"} eq "150sk22") { 
 		$ref = $f->{"reference"};
-		#print $f->{"reference"} . "\n";
 			my @Avai = @{ $f->{'zones'} };
 			foreach my $p ( @Avai) {
-				#print "to zone " .  $p->{"zone"} . " there is " . $p->{"availability"} . "\n";
 				if($p->{'availability'} ne "unknown") { $avaiok = $p->{"zone"}; $type = $p->{"availability"}; }
 			}
 		}
 	}
 
-	if(-e "/tmp/sms_kimsufi") { exit; }
+	if(-e $tempfile) { exit; }
 
 	if($type) {
-		system("touch /tmp/sms_kimsufi");
+		system("touch $tempfile");
 		$sms = "Ref+:+$ref+find+in+$avaiok+:+avail:+$type";
 		$smsformat = "http://playsms.*******/index.php?app=ws&u=******&h=*******&op=pv&to=06*******&msg=$sms";
 		my $req2 =  HTTP::Request->new(GET => $smsformat);
