@@ -48,7 +48,7 @@ if ($resp->is_success) {
 	if($type) {
 		system("touch $tempfile");
 		$sms = "Ref+:+$ref+find+in+$avaiok+:+avail:+$type";
-		$smsformat = "http://playsms.*******/index.php?app=ws&u=******&h=*******&op=pv&to=06*******&msg=$sms";
+		$smsformat = "http://playsms.*******/index.php?app=ws&u=******&h=*******&op=pv&to=$phone&msg=$sms";
 		my $req2 =  HTTP::Request->new(GET => $smsformat);
 		my $resp2 = $ua->request($req2);
 		if($resp2->is_success) { print "sms sent\n"; }
