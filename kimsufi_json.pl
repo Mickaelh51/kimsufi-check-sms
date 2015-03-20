@@ -37,10 +37,10 @@ if ($resp->is_success) {
 	foreach my $f ( @Refs ) {
 		if($f->{"reference"} eq $refdemand) {
 			$ref = $f->{"reference"};
-				my @Avai = @{ $f->{'zones'} };
-				foreach my $p ( @Avai) {
-					if($p->{'availability'} ne "unknown" && $p->{'availability'} ne "unavailable") { $avaiok = $p->{"zone"}; $type = $p->{"availability"}; }
-				}
+			my @Avai = @{ $f->{'zones'} };
+			foreach my $p ( @Avai) {
+				if($p->{'availability'} ne "unknown" && $p->{'availability'} ne "unavailable") { $avaiok = $p->{"zone"}; $type = $p->{"availability"}; }
+			}
 		}
 	}
 
